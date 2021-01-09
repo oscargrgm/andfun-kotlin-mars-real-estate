@@ -22,6 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.android.marsrealestate.overview.OverviewViewModel" />
@@ -36,8 +37,8 @@
             android:id="@+id/photos_grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="6dp"
             android:clipToPadding="false"
+            android:padding="6dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -49,6 +50,15 @@
             tools:listitem="@layout/grid_view_item" />
 
         <!-- TODO (05) Add ImageView to the ConstraintLayout, wrap_content, same constraints as RecyclerView -->
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:marsApiStatus="@{viewModel.status}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
