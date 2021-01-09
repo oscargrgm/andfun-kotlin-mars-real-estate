@@ -17,17 +17,18 @@
 
 package com.example.android.marsrealestate.overview
 
+//import kotlinx.coroutines.CoroutineScope
+//import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.android.marsrealestate.network.MarsApi
 import com.example.android.marsrealestate.network.MarsProperty
-//import kotlinx.coroutines.CoroutineScope
-//import kotlinx.coroutines.Dispatchers
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 enum class MarsApiStatus { LOADING, ERROR, DONE }
+
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
@@ -49,8 +50,9 @@ class OverviewViewModel : ViewModel() {
         get() = _properties
 
     // TODO (05) Add a _navigateToSelectedProperty MutableLiveData externalized as LiveData
-
-
+    private val _navigateToSelectedProperty = MutableLiveData<MarsProperty>()
+    val navigateToSelectedProperty: LiveData<MarsProperty>
+        get() = _navigateToSelectedProperty
 
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
@@ -61,7 +63,7 @@ class OverviewViewModel : ViewModel() {
 
     /**
      * Gets Mars real estate property information from the Mars API Retrofit service and updates the
-     * [MarsProperty] [List] and [MarsApiStatus] [LiveData]. 
+     * [MarsProperty] [List] and [MarsApiStatus] [LiveData].
      */
     private fun getMarsRealEstateProperties() {
         viewModelScope.launch {
@@ -80,4 +82,11 @@ class OverviewViewModel : ViewModel() {
      */
 
     // TODO (06) Add displayPropertyDetails and displayPropertyDetailsComplete methods
+    fun displayPropertyDetails(marsProperty: MarsProperty) {
+        _navigateToSelectedProperty.value = marsProperty
+    }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
+    }
 }
