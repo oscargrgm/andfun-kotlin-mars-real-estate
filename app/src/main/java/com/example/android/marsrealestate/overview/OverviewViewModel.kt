@@ -25,6 +25,7 @@ import com.example.android.marsrealestate.network.MarsProperty
 //import kotlinx.coroutines.CoroutineScope
 //import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
+import com.example.android.marsrealestate.network.MarsApiFilter
 import kotlinx.coroutines.launch
 
 enum class MarsApiStatus { LOADING, ERROR, DONE }
@@ -62,7 +63,7 @@ class OverviewViewModel : ViewModel() {
      */
     init {
         // TODO (05) Add MarsApiFilter.SHOW_ALL as a default parameter to the initial getMarsRealEstateProperties call
-        getMarsRealEstateProperties()
+        getMarsRealEstateProperties(MarsApiFilter.SHOW_ALL)
     }
 
     /**
@@ -71,12 +72,12 @@ class OverviewViewModel : ViewModel() {
      * coroutine Deferred, which we await to get the result of the transaction.
      */
     // TODO (03) Add MarsApiFilter parameter to getMarsRealEstateProperties
-    private fun getMarsRealEstateProperties() {
+    private fun getMarsRealEstateProperties(filter: MarsApiFilter) {
         viewModelScope.launch {
             // TODO (04) Add filter to getProperties() with filter.value
             _status.value = MarsApiStatus.LOADING
             try {
-                _properties.value = MarsApi.retrofitService.getProperties()
+                _properties.value = MarsApi.retrofitService.getProperties(filter.value)
                 _status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
                 _status.value = MarsApiStatus.ERROR
@@ -104,4 +105,7 @@ class OverviewViewModel : ViewModel() {
     }
 
     // TODO (06) Add updateFilter method that takes a filter input and re-gets the properties
+    fun updateFilter(filter: MarsApiFilter) {
+        getMarsRealEstateProperties(filter)
+    }
 }
